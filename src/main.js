@@ -14,4 +14,29 @@ Vue.use(ElementUI)
 import request from '@/util/request'
 Vue.prototype.$request = request;
 
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
+
 Vue.prototype.$md5 = md5;
+new Vue({
+  router,
+  store,
+  render: h => h(App),
+  methods: {
+    getData(){
+      var param = {
+        params:{
+          devid:'8479593759372',
+          user:'hanamizu',
+          key:'8aad46f68c77e83ee2bcc3d9f9ec818a'
+        }
+      }
+      this.$http.get('/campus-help-fr',param).then(res=>{
+        console.log(res)
+      })
+    }
+  }
+}).$mount('#app')

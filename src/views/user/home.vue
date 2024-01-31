@@ -2,9 +2,9 @@
 	<div class="main">
 		<div class="left" :style="{width:isCollapse?'64px':'200px',background:themeColor.bg,color:themeColor.color}"
 			style="transition: .3s;">
-			<!-- <div class="logo">
+			<div class="logo">
 				<img src="@s/assets/logo.jpg" style="width: 26%">
-			</div> -->
+			</div>
 			<el-menu :collapse-transition="false" :collapse="isCollapse" :router="true" :default-active="$route.path"
 				:background-color="themeColor.bg" :text-color="themeColor.color" :unique-opened="true">
 				<el-menu-item index="/home/">
@@ -50,6 +50,17 @@
 					</el-menu-item>
 				</el-submenu>
 
+				<el-submenu index="9">
+					<template slot="title">
+						<i class="el-icon-s-custom"></i>
+						<span>评价管理</span>
+					</template>
+					<el-menu-item index="/home/myremark">我的评价
+					</el-menu-item>
+					<el-menu-item index="/home/userremark">评价我的
+					</el-menu-item>
+				</el-submenu>
+
 				<el-submenu index="11">
 					<template slot="title">
 						<i class="el-icon-s-custom"></i>
@@ -72,7 +83,15 @@
 					:background-color="themeColor.bg" :text-color="themeColor.color"
 					:active-text-color="themeColor.color" menu-trigger="click">
 
+					<el-menu-item @click="recharge(user.studentId)">充值余额</el-menu-item>
+					<el-submenu index="1">
+						<template slot="title">更换主题</template>
+						<el-menu-item v-for="item in theme" @click="changeColor(item)">
+							{{item.name}}
+						</el-menu-item>
+					</el-submenu>
 					<el-submenu index="2">
+						<!--                        <template slot="title">{{user.username}}</template>-->
 						<el-avatar slot="title"
 							style="background: #65c4a6; user-select: none;">{{firstName}}</el-avatar>
 						<el-menu-item index="2-1" @click="exit">退出</el-menu-item>
@@ -226,6 +245,26 @@
 						})
 				}).catch(() => {})
 			},
+			recharge(id) {
+				this.$prompt('请输入充值金额', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					inputType: 'text',
+					closeOnClickModal: false,
+					inputPattern: /^[0-9]*$/,
+					inputErrorMessage: '格式不对，只能输入数字'
+				}).then((res) => {
+					// console.log(res);
+					this.$put('/user/rollIn', {
+							studentId: id,
+							balance: res.value
+						})
+						.then((res) => {
+							this.newList(this.user.id)
+							this.$notifyMsg('成功', '充值成功', 'success')
+						})
+				}).catch(() => {})
+			},
 			personalInformation() {
 				this.dialogVisible = true;
 				this.ruleForm.username = this.user.username
@@ -258,7 +297,7 @@
 				sessionStorage.removeItem('user');
 				this.$router.push('/')
 			},
-			// 文字頭像
+			// 文字头像
 			textAvatar(username) {
 				let arr = username.split(' ');
 				for (var i in arr) {

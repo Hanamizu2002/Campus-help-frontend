@@ -1,6 +1,7 @@
 // 工具包
 import axios from "axios"
 import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const Qs = require("querystring");
 
@@ -8,7 +9,7 @@ const Qs = require("querystring");
  * instance封装axios
  */
 var instance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:8080', // localtest
     // 超时时间
     timeout: 20000
 });
@@ -35,7 +36,7 @@ instance.interceptors.response.use(function (response) {
  * service封装axios
  */
 var service = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:8080', // 本地测试
     // headers:{
     //     'Content-Type':'application/json;charset=UTF-8'
     // },
@@ -67,7 +68,6 @@ let get = function (url, params) {
     return instance.get(url, {params});
 }
 let post = function (url, params) {
-
     return instance.post(url, Qs.stringify(params));
 }
 let put = function (url, params) {
