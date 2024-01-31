@@ -23,7 +23,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    admin,user,theme
+    user,admin
   },
   //相当于
   getters:{

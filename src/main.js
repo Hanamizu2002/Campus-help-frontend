@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import md5 from 'js-md5'
 import router from './router'
 import store from './store'
+import md5 from 'js-md5'
 
 import'./plugin'
 
@@ -13,12 +13,6 @@ Vue.use(ElementUI)
 //将request注册到全局
 import request from '@/util/request'
 Vue.prototype.$request = request;
-
-import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-Vue.use(VueQuillEditor)
 
 Vue.prototype.$md5 = md5;
 new Vue({
