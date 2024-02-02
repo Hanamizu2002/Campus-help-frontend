@@ -3,7 +3,7 @@
 		<div class="left" :style="{width:isCollapse?'64px':'200px',background:themeColor.bg,color:themeColor.color}"
 			style="transition: .3s;">
 			<div class="logo">
-				<img src="@s/assets/logo.jpg" style="width: 26%">
+				<img src="https://alsace-web-1318358151.cos.ap-shanghai.myqcloud.com/service/images/logo/logo-web.svg" style="width: 80%">
 			</div>
 			<el-menu :collapse-transition="false" :collapse="isCollapse" :router="true" :default-active="$route.path"
 				:background-color="themeColor.bg" :text-color="themeColor.color" :unique-opened="true">
@@ -233,7 +233,7 @@
 					inputType: 'password',
 					closeOnClickModal: false,
 					inputPattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/,
-					inputErrorMessage: '格式不对，密码只能输入6-16位英文和数字'
+					inputErrorMessage: '格式错误，密码只能输入6-16位英文和数字'
 				}).then((res) => {
 					// console.log(res);
 					this.$put('/user', {

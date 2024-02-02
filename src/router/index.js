@@ -84,7 +84,7 @@ const routes = [{
 				component: () => import("@v/admin/children/Task.vue")
 			},
 		]
-	}
+	},
 ]
 
 const router = new VueRouter({

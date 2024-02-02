@@ -1,9 +1,7 @@
 export default {
 	namespaced: true,
 	state: {
-		admin: {
-
-		}
+		admin: {}
 	},
 	// Mutation用于变更Store中的数据
 	// 只能通过mutation变更store数据，不可以直接操作store中的数据

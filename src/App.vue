@@ -15,15 +15,15 @@
 			let path = window.location.href;
 			let index = path.indexOf("#");
 			path = path.substring(index + 1)
-			if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-			  if (path.indexOf('/m/') == -1){
-			    this.$router.push("m" + path)
-			  }
-			}else {
-			  if(path.indexOf('/m/') != -1){
-			    this.$router.push(path.substring(2))
-			  }
-			}
+			// if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+			//   if (path.indexOf('/m/') == -1){
+			//     this.$router.push("m" + path)
+			//   }
+			// }else {
+			//   if(path.indexOf('/m/') != -1){
+			//     this.$router.push(path.substring(2))
+			//   }
+			// }
 		}
 	}
 </script>

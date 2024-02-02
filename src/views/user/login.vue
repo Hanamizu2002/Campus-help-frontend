@@ -91,7 +91,7 @@
 					//登录
 					if (val == 'sign') {
 						{
-							this.$get("/user/login", {
+							this.$post("/user/login", {
 									"studentId": this.studentId,
 									"password": this.$md5(this.password),
 									"schoolId": this.schoolId

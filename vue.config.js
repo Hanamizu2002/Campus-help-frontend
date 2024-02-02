@@ -25,7 +25,7 @@ module.exports = {
 	            "@c": path.resolve(__dirname,'src/components'),
 	            //src路径
 	            "@s": path.resolve(__dirname,'src'),
-	            
+	            //assets 
 	            "@a": path.resolve(__dirname,'src/assets'),
 	        }
 	    }
