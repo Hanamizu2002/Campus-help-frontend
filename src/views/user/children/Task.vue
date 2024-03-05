@@ -19,6 +19,12 @@
 				<div class="append" style="border-right: 1px solid #DCDFE6;border-left: none;">余额：{{user.balance}}元
 				</div>
 			</div>
+			<div class="input">
+				<div class="append">任务类型</div>
+				<el-select v-model="selectedTaskType" placeholder="请选择任务类型">
+					<el-option v-for="item in taskTypes" :key="item.id" :label="item.name" :value="item.id"></el-option>
+				</el-select>
+			</div>
 			<el-card class="box-card">
 				<div slot="header" class="clearfix">
 					<span>详细描述</span>
@@ -43,6 +49,7 @@
 						</el-collapse-item>
 						<el-collapse-item title="任务奖励" name="3">
 							<div><i class="el-icon-money" style="color: red;"> {{reward}}元</i></div>
+							<!-- <div><i class="el-icon-coin" style="color: red;"> {{coin}}积分</i></div> -->
 						</el-collapse-item>
 						<el-collapse-item title="发布时间" name="4">
 							<div>{{createTime | formatDate}}</div>
@@ -73,6 +80,10 @@
 				taskTitle: "",
 				// 任务内容
 				taskContext: "",
+				// 选中的任务类型ID
+				selectedTaskType: null,
+				// 所有任务类型
+				taskTypes: [],
 				// 发布时间
 				createTime: "",
 				// 零钱
@@ -80,24 +91,25 @@
 				// 是否弹出抽屉
 				drawer: false,
 				activeNames: ['1', '2', '3', '4']
-
 			}
 		},
+
 		computed: {
 			...mapState("user", ['user'])
 		},
+
 		methods: {
 			...mapMutations('user', ['setUser']),
 
 			submitTask() {
-				if (this.taskTitle && this.reward > 0 && this.taskContext) {
-					// console.log(this.user)
+				if (this.taskTitle && this.reward > 0 && this.taskContext && this.selectedTaskType !== null) {
 					this.$post("/task", {
 						"publishId": this.user.id,
 						"schoolId": this.user.school.id,
 						"reward": this.reward,
 						"taskTitle": this.taskTitle,
-						"taskContext": this.taskContext
+						"taskContext": this.taskContext,
+						"taskTypeId": this.selectedTaskType
 					}).then(res => {
 						if (res.data.status) {
 							this.createTime = new Date().getTime()
@@ -107,21 +119,24 @@
 						} else {
 							this.$msg(res.data.msg, "error")
 						}
-					})
+					});
 				} else {
-					this.$msg("请正确填写信息", "error")
+					this.$message.error("请正确填写所有信息");
 				}
 			},
-			renew() {
-				this.$get("user/" + this.user.id)
-					.then(response => {
-						sessionStorage.setItem('user', JSON.stringify(response.data.user))
-						this.setUser(JSON.parse(sessionStorage.getItem('user')))
-					})
-			}
+		},
+		renew() {
+			this.$get("/taskType").then(res => {
+				this.taskTypes = res.data.taskType;
+			});
+			this.$get("/user/" + this.user.id)
+				.then(response => {
+					sessionStorage.setItem('user', JSON.stringify(response.data.user))
+					this.setUser(JSON.parse(sessionStorage.getItem('user')))
+				});
 		},
 		created() {
-			this.renew()
+			renew();
 		},
 		filters: {
 			formatDate(time) {
@@ -129,6 +144,7 @@
 				return formatDate(date, 'yyyy-MM-dd hh:mm');
 			}
 		}
+
 	}
 </script>
 

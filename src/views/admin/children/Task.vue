@@ -1,14 +1,5 @@
 <template>
 	<div class="content">
-		<!-- <div class="center">
-            <el-input placeholder="请输入内容" v-model="input" class="input-with-select" @keydown.enter.native="clickSearch">
-                <el-select v-model="select" slot="prepend" placeholder="请选择" value="1" @change="inquiry">
-                    <el-option value="entire" label="全部"></el-option>
-                    <el-option :value="item.id" v-for="item in schools" :label="item.name"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="clickSearch"></el-button>
-            </el-input>
-        </div> -->
 		<div class="bottom">
 			<el-table :data="tasks" :resizable="false" style="width: 100%  ">
 				<el-table-column prop="publish.username" label="发布人" min-width="140">
@@ -41,15 +32,20 @@
 				</el-table-column>
 				<el-table-column label="任务状态" min-width="90">
 					<template slot-scope="scope">
-						{{scope.row.state == 0?'未处理':scope.row.state == 1 ? '处理中' : '已完成'}}
+						{{scope.row.state == 0?'未审核':scope.row.state == 1?'已发布':scope.row.state == 2 ? '处理中' : '已完成'}}
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" width="100">
 					<template slot-scope="scope">
-						<el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info"
+						<el-popconfirm confirm-button-text='确认' cancel-button-text='取消' icon="el-icon-info"
 							icon-color="red" title="确定删除该任务吗？" @confirm="del(scope.row.id,scope.row.state)">
 							<el-button type="text" size="small" slot="reference"><i class="el-icon-delete"
 									style="color: red"></i></el-button>
+						</el-popconfirm>
+						<el-popconfirm confirm-button-text='确认' cancel-button-text='取消' icon="el-icon-info"
+							icon-color="red" title="确定通过审核吗？" @confirm="pass(scope.row.id,scope.row.state)">
+							<el-button type="text" size="small" slot="reference"
+								v-if="scope.row.state === 0">审核</el-button>
 						</el-popconfirm>
 					</template>
 				</el-table-column>
@@ -85,7 +81,7 @@
 			},
 
 			del(id, state) {
-				if (state == 0) {
+				if (state == 1) {
 					this.$del("/task/" + id)
 						.then((res) => {
 							this.$notifyMsg("成功", res.data.msg, "success")
@@ -93,6 +89,18 @@
 						})
 				} else {
 					this.$msg("该任务已被接收或已完成", "error")
+				}
+			},
+
+			pass(id, state) {
+				if (state == 0) {
+					this.$put("/task/pass/" + id)
+						.then((res) => {
+							this.$notifyMsg("成功", res.data.msg, "success")
+							this.newList()
+						})
+				} else {
+					this.$msg("该任务已通过审核", "error")
 				}
 			},
 

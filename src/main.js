@@ -16,7 +16,7 @@ Vue.prototype.$request = request;
 Vue.prototype.$md5 = md5;
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+	router,
+	store,
+	render: h => h(App)
 }).$mount('#app')

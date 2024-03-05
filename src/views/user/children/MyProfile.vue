@@ -20,14 +20,15 @@
 					<el-collapse-item title="学校" name="4">
 						<div>{{user.school.name}}</div>
 					</el-collapse-item>
-					<el-collapse-item title="系别" name="5">
+					<el-collapse-item title="分院" name="5">
 						<div>{{user.dept.name}}</div>
 					</el-collapse-item>
-					<el-collapse-item title="班级" name="6">
+					<el-collapse-item title="专业" name="6">
 						<div>{{user.aclass.name}}</div>
 					</el-collapse-item>
-					<el-collapse-item title="零钱" name="7">
+					<el-collapse-item title="钱包" name="7">
 						<div><i class="el-icon-money" style="color: red;"> {{user.balance}}元</i></div>
+						<div><i class="el-icon-coin" style="color: red;"> {{user.coin}}积分</i></div>
 					</el-collapse-item>
 				</el-collapse>
 			</div>
@@ -38,6 +39,7 @@
 
 <script>
 	import {
+		mapMutations,
 		mapState
 	} from 'vuex'
 	export default {
@@ -45,14 +47,19 @@
 		data() {
 			return {
 				activeNames: ['1', '2', '3', '4', '5', '6', '7'],
-			}
+			};
 		},
 		computed: {
 			...mapState('user', ['user'])
 		},
-		methods: {},
+		methods: {
+			...mapMutations('user', ['setUser']),
+		},
 		created() {
-			// console.log(this.user)
+			this.$get("/user/" + this.user.id).then(res => {
+				sessionStorage.setItem('user', JSON.stringify(res.data.user))
+				this.setUser(JSON.parse(sessionStorage.getItem('user')))
+			});
 		}
 	}
 </script>

@@ -2,7 +2,7 @@
 	<div class="content">
 		<el-row>
 			<el-col :span="24">
-				<div class="grid-content bg-purple-dark">欢迎登录-校园帮</div>
+				<div class="grid-content bg-purple-dark">欢迎登录---校园跑腿管理系统</div>
 			</el-col>
 		</el-row>
 		<el-alert :title="user.school.name + '- - -任务平台共' + tasks.length + '个任务'" :closable="false" type="info">
@@ -101,6 +101,7 @@
 			div {
 				border-radius: 5px;
 				padding: 15px;
+				margin: 10px;
 				color: #fff;
 			}
 

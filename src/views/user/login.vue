@@ -25,11 +25,11 @@
 				<div class="img">
 					<div class="img__text m--up">
 						<h2>还未注册？</h2>
-						<p>立即注册</p>
+						<p>立即注册，发现大量机会！</p>
 					</div>
 					<div class="img__text m--in">
 						<h2>已有帐号？</h2>
-						<p>点击登录</p>
+						<p>有帐号就登录吧，好久不见了！</p>
 					</div>
 					<div class="img__btn" @click="isShow = !isShow">
 						<span class="m--up">注 册</span>
@@ -61,6 +61,11 @@
 </template>
 
 <script>
+	import {
+		setCookie,
+		getCookie
+	} from "@/util/util";
+
 	export default {
 		name: "Login",
 		data() {
@@ -74,7 +79,7 @@
 		},
 		watch: {
 			schoolId() {
-				console.log(this.schoolId)
+				// console.log(this.schoolId)
 			}
 		},
 		created() {

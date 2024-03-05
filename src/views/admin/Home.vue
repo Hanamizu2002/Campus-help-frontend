@@ -37,7 +37,11 @@
 					</template>
 					<el-menu-item index="/admin/home/task">
 						<i class="el-icon-s-order"></i>
-						<span>任务信息</span>
+						<span>任务列表</span>
+					</el-menu-item>
+					<el-menu-item index="/admin/home/taskType">
+						<i class="el-icon-s-order"></i>
+						<span>任务类型</span>
 					</el-menu-item>
 				</el-submenu>
 
@@ -60,6 +64,32 @@
 					<el-menu-item index="/admin/home/notice">
 						<i class="el-icon-s-order"></i>
 						<span>系统公告</span>
+					</el-menu-item>
+				</el-submenu>
+				
+				<el-submenu index="8">
+					<template slot="title">
+						<i class="el-icon-coin"></i>
+						<span>积分管理</span>
+					</template>
+					<el-menu-item index="/admin/home/coinManager">
+						<i class="el-icon-s-order"></i>
+						<span>积分管理</span>
+					</el-menu-item>
+					<el-menu-item index="/admin/home/product">
+						<i class="el-icon-s-order"></i>
+						<span>商品管理</span>
+					</el-menu-item>
+				</el-submenu>
+				
+				<el-submenu index="9">
+					<template slot="title">
+						<i class="el-icon-setting"></i>
+						<span>系统设置</span>
+					</template>
+					<el-menu-item index="/admin/home/config">
+						<i class="el-icon-s-order"></i>
+						<span>系统管理</span>
 					</el-menu-item>
 				</el-submenu>
 

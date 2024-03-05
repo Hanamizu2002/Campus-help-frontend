@@ -4,9 +4,9 @@
 			:default-expand-all='false' :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 			<el-table-column prop="name" label="学校" sortable width="230">
 			</el-table-column>
-			<el-table-column prop="deptname" label="专业" sortable width="180">
+			<el-table-column prop="deptname" label="分院" sortable width="180">
 			</el-table-column>
-			<el-table-column prop="classesname" label="班级">
+			<el-table-column prop="classesname" label="专业">
 			</el-table-column>
 
 			<el-table-column label="操作">
@@ -32,10 +32,10 @@
 					<el-form-item label="学校" prop="name">
 						<el-input v-model="form.name" placeholder="请输入学校" />
 					</el-form-item>
-					<el-form-item label="专业" prop="deptname">
+					<el-form-item label="分院" prop="deptname">
 						<el-input v-model="form.deptname" placeholder="请输入专业" />
 					</el-form-item>
-					<el-form-item label="班级" prop="classesname">
+					<el-form-item label="专业" prop="classesname">
 						<el-input placeholder="请输入班级" v-model="form.classesname" />
 					</el-form-item>
 				</el-form>
@@ -44,11 +44,7 @@
 					<el-button @click="cancel">取 消</el-button>
 				</div>
 			</el-dialog>
-
 		</el-table>
-
-
-		<!-- ------------新加入---------- -->
 	</div>
 </template>
 
@@ -93,51 +89,51 @@
 			},
 
 			/** 提交按钮 */
-			// submit() {
-			// 	console.log(this.value.children.[0])
-			// 	this.$refs["form"].validate(valid => {
-			// 		if (valid) {
-			// 			if (this.form.id != null) {
-			// 				updateStuage(this.form).then(response => {
-			// 					this.$message("修改成功");
-			// 					this.open = false;
-			// 					this.newList();
-			// 				});
-			// 			} else {
-			// 				this.$post("/school", {
-			// 					"name": this.form.name,
-			// 				}).then(response => {
-			// 					this.$message("新增学校成功");
-			// 					this.newList();
-			// 					this.$post("/dept", {
-			// 						"schoolId": this.value.schoolId,
-			// 						"name": this.form.deptname,
-			// 					}).then(response => {
-			// 						const name = this.form.deptname;
-			// 						for (let i = 0; i < this.value.children.length; i++) {
-			// 							if (this.value.children.[i].deptname == name) {
-			// 								this.$message("新增专业成功");
-			// 								this.newList();
-			// 								this.$post("/class", {
-			// 									"schoolId": this.value.schoolId,
-			// 									"deptId": this.value.children.[i].deptsId,
-			// 									"name": this.form.classesname,
-			// 								}).then(response => {
-			// 									this.$message("新增班级成功");
-			// 									this.newList();
-			// 								});
-			// 							}
-			// 						}
+			submit() {
+				// console.log(this.value.children.[0])
+				this.$refs["form"].validate(valid => {
+					if (valid) {
+						if (this.form.id != null) {
+							updateStuage(this.form).then(response => {
+								this.$message("修改成功");
+								this.open = false;
+								this.newList();
+							});
+						} else {
+							this.$post("/school", {
+								"name": this.form.name,
+							}).then(response => {
+								this.$message("新增学校成功");
+								this.newList();
+								this.$post("/dept", {
+									"schoolId": this.value.schoolId,
+									"name": this.form.deptname,
+								}).then(response => {
+									const name = this.form.deptname;
+									for (let i = 0; i < this.value.children.length; i++) {
+										if (this.value.children[i].deptname == name) {
+											this.$message("新增专业成功");
+											this.newList();
+											this.$post("/class", {
+												"schoolId": this.value.schoolId,
+												"deptId": this.value.children[i].deptsId,
+												"name": this.form.classesname,
+											}).then(response => {
+												this.$message("新增班级成功");
+												this.newList();
+											});
+										}
+									}
 
-			// 					});
-			// 					this.$message("新增成功");
-			// 					this.open = false;
-			// 					this.newList();
-			// 				});
-			// 			}
-			// 		}
-			// 	});
-			// },
+								});
+								this.$message("新增成功");
+								this.open = false;
+								this.newList();
+							});
+						}
+					}
+				});
+			},
 
 
 
