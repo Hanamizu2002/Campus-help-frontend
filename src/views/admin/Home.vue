@@ -72,10 +72,10 @@
 						<i class="el-icon-coin"></i>
 						<span>积分管理</span>
 					</template>
-					<el-menu-item index="/admin/home/coinManager">
+					<!-- <el-menu-item index="/admin/home/coinManager">
 						<i class="el-icon-s-order"></i>
 						<span>积分管理</span>
-					</el-menu-item>
+					</el-menu-item> -->
 					<el-menu-item index="/admin/home/product">
 						<i class="el-icon-s-order"></i>
 						<span>商品管理</span>
