@@ -9,7 +9,7 @@
 				<el-input v-model="queryParams.taskId" placeholder="请输入任务id" clearable
 					@keyup.enter.native="handleQuery" />
 			</el-form-item>
-			<el-form-item label="送货人id" prop="acceptId">
+			<el-form-item label="完成人id" prop="acceptId">
 				<el-input v-model="queryParams.acceptId" placeholder="请输入送货人id" clearable
 					@keyup.enter.native="handleQuery" />
 			</el-form-item>
@@ -49,7 +49,7 @@
 
 			<el-table-column label="评价内容" align="center" prop="remark" />
 			<el-table-column label="任务id" align="center" prop="taskId" />
-			<el-table-column label="送货人id" align="center" prop="acceptId" />
+			<el-table-column label="完成人id" align="center" prop="acceptId" />
 			<el-table-column label="评价人id" align="center" prop="publishId" />
 			<el-table-column label="操作" align="center" class-name="small-padding fixed-width">
 				<template slot-scope="scope">

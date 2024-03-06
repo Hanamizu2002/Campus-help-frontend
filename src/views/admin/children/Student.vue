@@ -28,11 +28,13 @@
 
 				<el-table-column prop="school.name" label="学校" min-width="200">
 				</el-table-column>
-				<el-table-column prop="dept.name" label="所在系" min-width="100">
+				<el-table-column prop="dept.name" label="分院" min-width="100">
 				</el-table-column>
 				<el-table-column prop="aclass.name" label="班级" min-width="150">
 				</el-table-column>
-				<el-table-column prop="balance" label="余额" min-width="50">
+				<el-table-column prop="balance" label="余额" min-width="100">
+				</el-table-column>
+				<el-table-column prop="coin" label="积分" min-width="100">
 				</el-table-column>
 				<el-table-column label="禁用用户" min-width="90">
 					<template slot-scope="scope">
@@ -42,7 +44,7 @@
 					</template>
 				</el-table-column>
 
-				<el-table-column label="操作" width="100">
+				<!-- <el-table-column label="操作" width="100">
 					<template slot-scope="scope">
 						<el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info"
 							icon-color="red" title="确定删除该学生吗？" @confirm="del(scope.row.id)">
@@ -50,7 +52,7 @@
 									style="color: red"></i></el-button>
 						</el-popconfirm>
 					</template>
-				</el-table-column>
+				</el-table-column> -->
 			</el-table>
 		</div>
 	</div>
