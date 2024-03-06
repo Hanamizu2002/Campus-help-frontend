@@ -13,19 +13,46 @@
 					<el-input v-model="newProduct.stock" placeholder="请输入库存"></el-input>
 				</el-form-item>
 				<el-form-item label="商品图片">
-					<el-upload class="upload-demo" action="/upload" 
-						:on-success="handleUploadSuccess"
-						:before-upload="beforeImageUpload">
-						<el-button size="small" type="primary">点击上传图片</el-button>
+					<el-upload class="avatar-uploader" :action="uploadUrl" :before-upload="beforeImageUpload"
+						:on-success="handleSuccess" :http-request="uploadImage" :show-file-list="false">
+						<el-button size="small" type="primary">点击上传</el-button>
+						<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
 					</el-upload>
-					<div v-if="newProduct.image" style="margin-top: 10px;">
-						<img :src="newProduct.image" style="height: 100px;">
+					<div v-if="image" style="margin-top: 10px;">
+						<img :src="image" style="height: 100px;">
 					</div>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="showAddDialog = false">取消</el-button>
 				<el-button type="primary" @click="addProduct">确定</el-button>
+			</span>
+		</el-dialog>
+		<el-dialog :visible.sync="showEditDialog" title="编辑商品" @close="resetEditing">
+			<el-form ref="editProductForm" :model="editingProduct">
+				<el-form-item label="商品名称">
+					<el-input v-model="editingProduct.name" placeholder="请输入商品名称"></el-input>
+				</el-form-item>
+				<el-form-item label="所需积分">
+					<el-input v-model="editingProduct.cost" placeholder="请输入所需积分"></el-input>
+				</el-form-item>
+				<el-form-item label="库存">
+					<el-input v-model="editingProduct.stock" placeholder="请输入库存"></el-input>
+				</el-form-item>
+				<el-form-item label="商品图片">
+					<el-upload class="avatar-uploader" :action="uploadUrl" :before-upload="beforeImageUpload"
+						:on-success="handleSuccess" :http-request="uploadImage" :show-file-list="false">
+						<el-button size="small" type="primary">点击上传</el-button>
+						<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
+					</el-upload>
+					<div v-if="this.image" style="margin-top: 10px;">
+						<img :src="this.image" style="height: 100px;">
+					</div>
+				</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="showEditDialog = false">取消</el-button>
+				<el-button type="primary" @click="updateProduct">保存</el-button>
 			</span>
 		</el-dialog>
 		<el-table :data="products" style="width: 100%">
@@ -48,18 +75,26 @@
 </template>
 
 <script>
+	import axios from "axios"
 	export default {
 		name: "ProductManagement",
 		data() {
 			return {
+				uploadUrl: "http://localhost:8080/upload",
 				products: [],
-				showAddDialog: false,
+				showEditDialog: false,
+				editingProduct: {
+					name: '',
+					cost: '',
+					stock: ''
+				},
+				showAddDialog: false, 
 				newProduct: {
 					name: '',
 					cost: '',
-					image: '' ,// 存储上传的图片URL
 					stock: ''
-				}
+				},
+				image: null
 			};
 		},
 		methods: {
@@ -79,11 +114,12 @@
 					name: this.newProduct.name,
 					cost: this.newProduct.cost,
 					stock: this.newProduct.stock,
-					image: this.newProduct.image,
+					image: this.image,
 				}).then((response) => {
 					if (response.data.status) {
 						this.$message.success('商品添加成功');
 						this.showAddDialog = false;
+						this.image = null;
 						this.resetAdding();
 						this.fetchProducts(); // 重新加载商品列表
 					} else {
@@ -96,8 +132,8 @@
 			},
 
 			editProduct(product) {
-				// 克隆对象以避免直接修改data中的数据
-				this.editingProduct = JSON.parse(JSON.stringify(product));
+				this.editingProduct = JSON.parse(JSON.stringify(product)); // 避免直接修改原始数据
+				this.image = product.image;
 				this.showEditDialog = true;
 			},
 			updateProduct() {
@@ -108,15 +144,18 @@
 
 				// 调用更新商品的API
 				this.$put(`/product`, {
+					id: this.editingProduct.id,
 					name: this.editingProduct.name,
 					cost: this.editingProduct.cost,
 					stock: this.editingProduct.stock,
-					image: this.editingProduct.image
+					image: this.image
 				}).then((response) => {
 					if (response.data.status) {
 						this.$message.success('商品更新成功');
 						this.showEditDialog = false;
-						this.fetchProducts(); // 重新加载商品列表
+						this.image = null;
+						this.resetEditing();
+						this.fetchProducts(); 
 					} else {
 						this.$message.error(response.data.msg || '更新失败');
 					}
@@ -125,14 +164,14 @@
 					this.$message.error('更新商品失败');
 				});
 			},
-
+			
 			deleteProduct(id) {
 				this.$confirm('确定要删除这个商品吗?', '警告', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$delete(`/product/${id}`).then((response) => {
+					this.$del(`/product/${id}`).then((response) => {
 						if (response.data.status) {
 							this.$message.success('商品删除成功');
 							this.fetchProducts(); // 重新加载商品列表
@@ -148,26 +187,56 @@
 				});
 			},
 
-			handleUploadSuccess(response, file) {
-				// 假设上传成功后的响应中包含图片的URL
-				this.newProduct.image = response.url;
-			},
 			beforeImageUpload(file) {
-				// 可以在这里添加文件大小或类型的检查
 				const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
 				if (!isJPG) {
 					this.$message.error('上传图片只能是 JPG/PNG 格式!');
 					return false;
 				}
+				const isLtSize = file.size / 1024 / 1024 < 5;
+				if (!isLtSize) {
+					this.$message.error('上传图片大小不能超过 5MB!');
+					return false;
+				}
 				return true;
+			},
+			handleSuccess(response, file, fileList) {
+				console.log('上传成功: ', response);
+				this.image = response.url;
+				this.$message.success('图片上传成功');
+			},
+			uploadImage(uploadEvent) {
+				const file = uploadEvent.file;
+				let formData = new FormData();
+				formData.append("file", file);
+				console.log(file)
+				axios.post('http://localhost:8080/upload', formData)
+					.then(response => {
+						console.log('上传成功: ', response.data);
+						this.image = response.data.data;
+						this.$message.success('图片上传成功');
+					})
+					.catch(error => {
+						console.error('上传图片失败: ', error);
+						this.$message.error('图片上传失败');
+					});
+			},
+			resetEditing() {
+				this.editingProduct = {
+					name: '',
+					cost: '',
+					stock: '',
+				};
+				this.image = null
 			},
 			resetAdding() {
 				this.newProduct = {
 					name: '',
 					cost: '',
-					image: ''
+					stock: '',
 				};
-			}
+				this.image = null
+			},
 		},
 		created() {
 			this.fetchProducts();
@@ -183,5 +252,32 @@
 	.product-management img {
 		max-width: 100%;
 		height: auto;
+	}
+
+	.avatar-uploader .el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.avatar-uploader .el-upload:hover {
+		border-color: #409EFF;
+	}
+
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 178px;
+		height: 178px;
+		line-height: 178px;
+		text-align: center;
+	}
+
+	.avatar {
+		width: 178px;
+		height: 178px;
+		display: block;
 	}
 </style>
