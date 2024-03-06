@@ -13,7 +13,15 @@
 				</el-table-column>
 				<el-table-column prop="school.name" label="任务所在学校" min-width="200">
 				</el-table-column>
+				<el-table-column prop="taskType.name" label="分类" min-width="110">
+				</el-table-column>
 				<el-table-column prop="taskTitle" label="标题" min-width="180">
+				</el-table-column>
+				<el-table-column label="图片" min-width="160">
+					<template slot-scope="scope">
+						<img v-if="scope.row.image" :src="scope.row.image" style="height: 50px; width: auto;"
+							alt="Image">
+					</template>
 				</el-table-column>
 				<el-table-column label="发布时间" min-width="160">
 					<template slot-scope="scope">

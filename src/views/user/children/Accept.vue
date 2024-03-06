@@ -34,6 +34,8 @@
 						<p class="el-icon-s-custom">{{item.publish.username}}
 							<span style="margin-left: 10px;">{{item.taskContext}}</span>
 						</p>
+						<img v-if="item.image" :src="item.image" style="height: 50px; width: auto;"
+							alt="Image">
 						<span style="float: right">{{item.createTime | formatDate}}</span>
 					</div>
 				</el-card>
