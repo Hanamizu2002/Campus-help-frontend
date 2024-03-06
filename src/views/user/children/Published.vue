@@ -8,22 +8,24 @@
 				<div slot="header" class="clearfix"
 					style="display: flex; align-items: center; justify-content: space-between">
 					<span style="display: flex;align-items: center">
-						<el-tag :type="item.state ==0 ? 'danger':item.state == 1 ? 'danger':(item.state == 2 ? 'warning':'success')"
+						<el-tag
+							:type="item.state ==0 ? 'danger':item.state == 1 ? 'danger':(item.state == 2 ? 'warning':'success')"
 							style="margin-right: 5px">{{item.state == 0 ? '审核中':item.state == 1 ? '待解决':(item.state == 2 ? '服务中':'已完成')}}</el-tag>
 						{{item.taskTitle}}
 					</span>
 
 					<!-- 评价按钮 -->
 					<el-button v-show="item.state == 3" style="float: right; padding: 3px 0" type="text"
-						@click="remark()">订单评价得积分</el-button>
+						@click="remark(item)">订单评价得积分</el-button>
 
 
-					<el-button style="float: right; padding: 3px 0" type="text" v-show="item.state != 0 && item.state != 1"
-						@click="receiver(item)">查看接受人信息
+					<el-button style="float: right; padding: 3px 0" type="text"
+						v-show="item.state != 0 && item.state != 1" @click="receiver(item)">查看接受人信息
 					</el-button>
 					<template>
 						<!--                        <i class="el-icon-edit" style="cursor: pointer; color: #66b1ff" v-show="item.state == 0"/>-->
-						<el-popconfirm title="确定取消任务吗？取消任务不会返还服务费用" @confirm="cancel(item.id)" v-show="item.state == 0 || item.state == 1">
+						<el-popconfirm title="确定取消任务吗？取消任务不会返还服务费用" @confirm="cancel(item.id)"
+							v-show="item.state == 0 || item.state == 1">
 							<el-button style="float: right; padding: 3px 0" type="text" slot="reference">取消任务
 							</el-button>
 						</el-popconfirm>
@@ -85,7 +87,7 @@
 		</el-drawer>
 
 		<!-- 添加或修改remark对话框 -->
-		<el-dialog :title="title" v-for="item in tasks" :visible.sync="open" width="500px" append-to-body>
+		<el-dialog :title="title" v-for="item in selectedTask" :visible.sync="open" width="500px" append-to-body>
 			<el-form ref="form" :model="form" :rules="rules" label-width="80px">
 				<el-form-item label="星级" prop="star">
 					<el-rate v-model="form.star" show-text>
@@ -96,7 +98,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="submitForm(item)">确 定</el-button>
+				<el-button type="primary" @click="submitForm(selectedTask)">确 定</el-button>
 				<el-button @click="exit">取 消</el-button>
 			</div>
 		</el-dialog>
@@ -131,6 +133,7 @@
 				rules: {},
 				// 弹出层标题
 				title: "",
+				selectedTask: null,
 			};
 		},
 		computed: {
@@ -144,12 +147,12 @@
 				this.$get("/task/published", {
 					id: this.user.id
 				}).then(res => {
-					console.log(res.data.task)
+					// console.log(res.data.task)
 					this.tasks = res.data.task
 				})
 			},
 			receiver(val) {
-				console.log(val)
+				// console.log(val)
 				this.recipientInformation = val.accept;
 				// console.log(this.recipientInformation)
 				this.drawer = true
@@ -192,11 +195,13 @@
 				}).catch(() => {})
 			},
 			// 评价用户
-			remark() {
+			remark(task) {
+				this.selectedTask = task;
+				// console.log(this.selectedTask);
 				this.open = true;
 				this.title = "添加评价";
 			},
-
+			
 			/** 提交按钮 */
 			submitForm(val) {
 				if (this.form.star == null) {
@@ -204,10 +209,12 @@
 				} else if (this.form.remark == null) {
 					this.$message("请输入评价内容");
 				} else {
-					// const aid = val.accept.id;
+					// console.log(this.tasks);
+					// console.log(val);
+					const aid = val.accept.id;
 					const taskid = val.id;
 					const pid = val.publish.id;
-					console.log(aid, taskid, pid);
+					// console.log(aid, taskid, pid);
 					addRemark({
 						"star": this.form.star,
 						"remark": this.form.remark,
@@ -215,6 +222,7 @@
 						"publishId": pid,
 						"taskId": taskid,
 					}).then(response => {
+						this.retrieveData();
 						this.$message("新增成功");
 						this.open = false;
 					});
