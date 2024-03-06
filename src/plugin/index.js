@@ -7,7 +7,7 @@ import 'vant/lib/index.css'
 Vue.use(ElementUI);
 Vue.use(Vant)
 
-// 注册myPlugin插件
-import myPlugin from "./myPlugin";
+// 注册插件
+import Mixin from "./mixin";
 
-Vue.use(myPlugin)
+Vue.use(Mixin)

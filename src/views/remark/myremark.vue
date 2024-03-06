@@ -17,10 +17,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="送货人id" prop="acceptId">
+      <el-form-item label="完成人id" prop="acceptId">
         <el-input
           v-model="queryParams.acceptId"
-          placeholder="请输入送货人id"
+          placeholder="请输入完成人id"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -54,7 +54,7 @@
 		<el-table v-loading="loading" :data="remarkList" @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55" align="center" />
 			<el-table-column label="任务id" align="center" prop="taskId" />
-			<el-table-column label="送货人id" align="center" prop="acceptId" />
+			<el-table-column label="完成人id" align="center" prop="acceptId" />
 
 			<el-table-column label="评分" min-width="100" align="center" prop="star">
 				<template slot-scope="scope">

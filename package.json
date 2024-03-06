@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cos-nodejs-sdk-v5": "^2.13.2",
     "element-ui": "^2.15.1",
     "js-md5": "^0.7.3",
     "nprogress": "^0.2.0",
