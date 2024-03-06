@@ -4,7 +4,7 @@
 			<el-col :span="24">
 				<div class="user-coin">您当前的积分余额为: {{ user.coin }}</div>
 				<el-row :gutter="20">
-					<el-col :span="6" v-for="product in products" :key="product.id" class="content">
+					<el-col :span="6" v-for="product in products" v-if="product.stock > 0" :key="product.id" class="content">
 						<el-card>
 							<div style="text-align: center;">
 								<img :src="product.image" alt="商品图片" style="max-width: 100%; max-height: 200px;">
@@ -76,6 +76,10 @@
 					this.$message.error('积分不足');
 					return;
 				}
+				if (!product.stock > 0) {
+					this.$message.error('库存不足');
+					return;
+				}
 				this.selectedProduct = product;
 				this.convertDialogVisible = true;
 			},
@@ -108,7 +112,8 @@
 					.then(() => {
 						this.$message.success('兑换成功');
 						this.convertDialogVisible = false;
-						this.fetchUserInfo()
+						this.fetchUserInfo();
+						this.fetchProducts();
 					})
 					.catch(error => {
 						console.error('兑换失败:', error);
