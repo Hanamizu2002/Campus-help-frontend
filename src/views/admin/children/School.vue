@@ -61,6 +61,7 @@ export default {
       dialogVisible: false,
       dialogTitle: '',
       dialogType: '', // 'school', 'dept', 'class'
+      dialogUpdate: false,
       form: {
         schoolId: '',
         deptId: '',
@@ -69,7 +70,6 @@ export default {
       rules: {
         name: [{required: true, message: '请输入名称', trigger: 'blur'}]
       },
-      a: '',
     };
   },
   methods: {
@@ -96,7 +96,6 @@ export default {
       this.dialogTitle = '添加学校';
       this.form = {name: ''};
       this.dialogVisible = true;
-      this.a = 'school';
     },
     handleAddDept() {
       this.dialogType = 'dept';
@@ -104,41 +103,63 @@ export default {
       this.form = {schoolId: '', name: ''};
       this.dialogVisible = true;
       this.fetchSchools();
-      this.a = 'dept';
     },
     handleAddClass() {
       this.dialogType = 'class';
       this.dialogTitle = '添加专业';
       this.form = {schoolId: '', deptId: '', name: ''};
       this.dialogVisible = true;
-      this.a = 'class';
     },
     submitForm() {
       this.dialogVisible = false;
-      if (this.a === "school") {
-        this.$post('/school', this.form).then(
-            res => {
-              this.$notifyMsg("成功", res.data.msg, "success")
-              this.fetchSchools();
-            }
-        );
-      } else if (this.a === "dept") {
-        this.$post('/dept', this.form).then(
-            res => {
-              this.$notifyMsg("成功", res.data.msg, "success")
-              this.fetchSchools();
-            }
-        );
-      } else if (this.a === "class") {
-        this.$post('/class', this.form).then(
-            res => {
-              this.$notifyMsg("成功", res.data.msg, "success")
-              this.fetchSchools();
-            }
-        );
+      if (this.dialogUpdate === true) {
+        if (this.dialogType === "school") {
+          this.$put('/school', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        } else if (this.dialogType === "dept") {
+          this.$put('/dept', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        } else if (this.dialogType === "class") {
+          this.$put('/class', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        }
+      } else {
+        if (this.dialogType === "school") {
+          this.$post('/school', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        } else if (this.dialogType === "dept") {
+          this.$post('/dept', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        } else if (this.dialogType === "class") {
+          this.$post('/class', this.form).then(
+              res => {
+                this.$notifyMsg("成功", res.data.msg, "success")
+                this.fetchSchools();
+              }
+          );
+        }
       }
-
-      console.log('Submitted:', this.dialogType, this.form);
+      // console.log('Submitted:', this.dialogType, this.form);
       this.form = {schoolId: '', deptId: '', name: ''};
     },
     handleDelete(a, b) {
@@ -163,6 +184,32 @@ export default {
             })
       }
     },
+    handleUpdate(index, row) {
+      if ('schoolId' in row && !('deptsId' in row)) {
+        this.dialogType = 'school';
+        this.dialogTitle = '更新学校';
+        this.form = {id: row.schoolId, name: row.name};
+        this.dialogUpdate = true;
+        this.dialogVisible = true;
+      } else if ('deptsId' in row && !('classesId' in row)) {
+        this.dialogType = 'dept';
+        this.dialogTitle = '更新分院';
+        this.fetchSchools();
+        this.form = {id: row.deptsId, schoolId: row.schoolId, name: row.deptname};
+        this.dialogUpdate = true;
+        this.dialogVisible = true;
+      } else if ('classesId' in row) {
+        this.dialogType = 'class';
+        this.dialogTitle = '更新专业';
+        this.form = {id: row.classesId, deptId: row.deptsId, name: row.classesname};
+        // 需要获取当前专业所属的学校ID，然后根据该学校ID获取分院列表
+        const schoolId = this.schools.find(school => school.depts.some(dept => dept.id === row.deptsId)).id;
+        this.form.schoolId = schoolId;
+        this.fetchDepts(schoolId);
+        this.dialogUpdate = true;
+        this.dialogVisible = true;
+      }
+    }
   },
   created() {
     this.fetchSchools();
