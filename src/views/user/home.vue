@@ -3,7 +3,7 @@
 		<div class="left" :style="{width:isCollapse?'64px':'200px',background:themeColor.bg,color:themeColor.color}"
 			style="transition: .3s;">
 			<div class="logo">
-				<img src="@s/assets/logo.jpg" style="width: 26%">
+				校园帮
 			</div>
 			<el-menu :collapse-transition="false" :collapse="isCollapse" :router="true" :default-active="$route.path"
 				:background-color="themeColor.bg" :text-color="themeColor.color" :unique-opened="true">
@@ -14,7 +14,7 @@
 				<el-submenu index="1">
 					<template slot="title">
 						<i class="el-icon-office-building"></i>
-						<span>任务管理</span>
+						<span>任务</span>
 					</template>
 					<el-menu-item index="/home/task">
 						<i class="el-icon-s-order"></i>
@@ -22,7 +22,7 @@
 					</el-menu-item>
 					<el-menu-item index="/home/accept">
 						<i class="el-icon-s-order"></i>
-						<span>接受任务</span>
+						<span>任务广场</span>
 					</el-menu-item>
 				</el-submenu>
 
@@ -189,7 +189,7 @@
 			//面包屑
 			getBreadcrumb() {
 				let matched = this.$route.matched;
-				if (matched[0].name != 'home') {
+				if (matched[0].name !== 'home') {
 					matched = [{
 						path: "/home/",
 						meta: {
@@ -305,11 +305,10 @@
 			// 文字头像
 			textAvatar(username) {
 				let arr = username.split(' ');
-				for (var i in arr) {
+				for (let i in arr) {
 					this.firstName += arr[i].substr(0, 1);
 				}
 				this.firstName = this.firstName.toLocaleUpperCase();
-				// console.log('firstName->' + this.firstName);
 			}
 		},
 		computed: {

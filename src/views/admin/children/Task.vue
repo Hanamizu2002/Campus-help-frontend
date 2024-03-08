@@ -40,7 +40,7 @@
 				</el-table-column>
 				<el-table-column label="任务状态" min-width="90">
 					<template slot-scope="scope">
-						{{scope.row.state == 0?'未审核':scope.row.state == 1?'已发布':scope.row.state == 2 ? '处理中' : '已完成'}}
+						{{scope.row.state == 0?'未审核':scope.row.state == 1?'已发布':scope.row.state == 2 ? '处理中' :scope.row.state == 1000 ? '❌已删除': '已完成'}}
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" width="100">
@@ -74,7 +74,7 @@
 				if (this.select == 'entire') {
 					this.newList();
 				} else {
-					this.$post("/task/api/findTaskBySchoolId", {
+					this.$post("/task/findTaskBySchoolId", {
 							"id": this.select
 						})
 						.then(res => {
@@ -89,14 +89,14 @@
 			},
 
 			del(id, state) {
-				if (state == 1) {
+				if (state != 1000) {
 					this.$del("/task/" + id)
 						.then((res) => {
 							this.$notifyMsg("成功", res.data.msg, "success")
 							this.newList()
 						})
 				} else {
-					this.$msg("该任务已被接收或已完成", "error")
+					this.$msg("该任务已被删除", "error")
 				}
 			},
 

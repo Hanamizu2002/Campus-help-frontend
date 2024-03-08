@@ -10,7 +10,7 @@
 		<div>
 			<el-card class="box-card">
 				<div slot="header" class="clearfix">
-					<span>任务</span>
+					<span>任务广场</span>
 					<el-button style="float: right; padding: 3px 0" type="text">最新</el-button>
 				</div>
 				<el-card class="box-card" v-for="item in filteredTasks" :key="item.id" v-if="item.state == 1">

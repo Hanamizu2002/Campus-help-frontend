@@ -33,10 +33,10 @@
 						<el-input v-model="form.name" placeholder="请输入学校" />
 					</el-form-item>
 					<el-form-item label="分院" prop="deptname">
-						<el-input v-model="form.deptname" placeholder="请输入专业" />
+						<el-input v-model="form.deptname" placeholder="请输入分院" />
 					</el-form-item>
 					<el-form-item label="专业" prop="classesname">
-						<el-input placeholder="请输入班级" v-model="form.classesname" />
+						<el-input placeholder="请输入专业" v-model="form.classesname" />
 					</el-form-item>
 				</el-form>
 				<div slot="footer" class="dialog-footer">

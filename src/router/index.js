@@ -65,7 +65,7 @@ const routes = [
 			{
 				path: "accept",
 				meta: {
-					title: "接受任务"
+					title: "任务广场"
 				},
 				component: () => import('@v/user/children/Accept.vue')
 			},
@@ -175,6 +175,14 @@ const routes = [
 					title: "积分管理"
 				},
 				component: () => import("@v/admin/children/CoinManager.vue")
+			},
+			{
+				name: "exchange",
+				path: "exchange",
+				meta: {
+					title: "发货管理"
+				},
+				component: () => import("@v/admin/children/Exchange.vue")
 			},
 			{
 				name: "product",
