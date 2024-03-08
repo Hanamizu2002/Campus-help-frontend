@@ -78,7 +78,7 @@
 
 			/** 新增按钮操作 */
 			handleAdd(a, b) {
-				console.log(b.children.length)
+				// console.log(b.children.length)
 				// console.log(b)
 				if (b.schoolId != null) {
 					this.value = b;
@@ -111,7 +111,7 @@
 								}).then(response => {
 									const name = this.form.deptname;
 									for (let i = 0; i < this.value.children.length; i++) {
-										if (this.value.children[i].deptname == name) {
+										if (this.value.children[i].deptname === name) {
 											this.$message("新增专业成功");
 											this.newList();
 											this.$post("/class", {
@@ -143,7 +143,7 @@
 			},
 
 			handleDelete(a, b) {
-				console.log(b);
+				// console.log(b);
 				if (b.schoolId != null) {
 					this.$del("/school/" + b.schoolId)
 						.then((res) => {
