@@ -194,7 +194,7 @@
 			/** 删除按钮操作 */
 			handleDelete(row) {
 				const noticeIds = row.noticeId || this.ids;
-				this.$confirm('是否确认删除此学生', '提示', {
+				this.$confirm('是否确认删除此公告', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning',

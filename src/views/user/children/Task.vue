@@ -44,7 +44,7 @@
         </el-input>
       </el-card>
     </el-card>
-    <el-drawer title="任务信息" :visible.sync="drawer" direction="rtl">
+    <el-drawer title="任务信息" :visible.sync="drawer" direction="rtl" :before-close="renew">
       <div class="content_drawer">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -181,6 +181,7 @@ export default {
       this.taskTitle = "";
       this.taskContext = "";
       this.selectedTaskType = null;
+      this.drawer = false;
     },
   },
 

@@ -40,8 +40,10 @@
 				</el-table-column>
 				<el-table-column label="任务状态" min-width="90">
 					<template slot-scope="scope">
-						{{scope.row.state == 0?'未审核':scope.row.state == 1?'已发布':scope.row.state == 2 ? '处理中' :scope.row.state == 1000 ? '❌已删除': '已完成'}}
-					</template>
+            {{
+              scope.row.state === 0 ? '未审核' : scope.row.state === 1 ? '已发布' : scope.row.state === 2 ? '处理中' : scope.row.state == 1000 ? '❌已删除' : '已完成'
+            }}
+          </template>
 				</el-table-column>
 				<el-table-column label="操作" width="100">
 					<template slot-scope="scope">
@@ -71,7 +73,7 @@
 		name: "Task",
 		methods: {
 			inquiry() {
-				if (this.select == 'entire') {
+				if (this.select === 'entire') {
 					this.newList();
 				} else {
 					this.$post("/task/findTaskBySchoolId", {
@@ -83,13 +85,13 @@
 				}
 			},
 			clickSearch() {
-				if (this.input == '已完成') {
+				if (this.input === '已完成') {
 
 				}
 			},
 
 			del(id, state) {
-				if (state != 1000) {
+				if (state !== 1000) {
 					this.$del("/task/" + id)
 						.then((res) => {
 							this.$notifyMsg("成功", res.data.msg, "success")
@@ -101,7 +103,7 @@
 			},
 
 			pass(id, state) {
-				if (state == 0) {
+				if (state === 0) {
 					this.$put("/task/pass/" + id)
 						.then((res) => {
 							this.$notifyMsg("成功", res.data.msg, "success")
@@ -149,7 +151,7 @@
 		},
 		created() {
 			this.newList();
-			this.$get("school")
+			this.$get("/school")
 				.then(res => {
 					this.schools = res.data.schools
 				})
