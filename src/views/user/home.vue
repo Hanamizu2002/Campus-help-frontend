@@ -123,7 +123,7 @@
 			:before-close="handleClose">
 			<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
 				class="demo-ruleForm ruleform">
-				<el-form-item label="班级">
+				<el-form-item label="专业">
 					<el-cascader v-model="value" :options="school.depts" :props="{
                                 children:'classes',
                                 label:'name',
