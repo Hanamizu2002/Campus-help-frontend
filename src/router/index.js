@@ -7,7 +7,7 @@ const routes = [
 	// 404
 	{
 		path: "*",
-		component: () => import("@v/Error.vue")
+		component: () => import("@v/error.vue")
 	},
 
 	// 用户
@@ -17,9 +17,9 @@ const routes = [
 	},
 	{
 		path: "/login",
-		component: () => import("@v/user/Login.vue")
+		component: () => import("@v/user/login.vue")
 	},
-	
+
 	// 管理员
 	{
 		path: "/admin",
@@ -33,13 +33,13 @@ const routes = [
 	// 用户子页面
 	{
 		path: "/home",
-		component: () => import("@v/user/Home.vue"),
+		component: () => import("@v/user/home.vue"),
 		children: [{
 				path: "/",
 				meta: {
 					title: '首页'
 				},
-				component: () => import("@v/user/children/Index.vue")
+				component: () => import("@v/user/children/index.vue")
 			},
 			{
 				path: "task",
@@ -108,7 +108,7 @@ const routes = [
 			},
 		]
 	},
-	
+
 	// 管理员子页面
 	{
 		path: "/admin/home",
